@@ -4,20 +4,18 @@ AWS = require 'aws-sdk'
 nodemailer = require 'nodemailer'
 smtpTransport = require 'nodemailer-smtp-transport'
 myEC2 = undefined
-errors = []
-successes = []
 name = ''
 client = undefined
 
 logError = (message) ->
-  errors.push
+  client.errors.push
     name: name
     message: message
     time: dateFormat new Date, 'h:MM:ss TT'
   console.error 'Error', name, message
   
 logSuccess = (message) ->
-  successes.push
+  client.successes.push
     name: name
     message: message
     time: dateFormat new Date, 'h:MM:ss TT'
@@ -40,8 +38,6 @@ checkImageForDeletion = (index, images, cb) ->
       goToNext()
   else
     goToNext()
-  
-#backupInstance = (index, instances
 
 fetchInstance = (index, instances, cb) ->
   goToNext = ->
@@ -100,6 +96,8 @@ fetchClient = (index, clients, cb) ->
     else cb?()
   console.log 'fetching client', index
   client = clients[index]
+  client.errors = []
+  client.successes = []
   AWS.config.update
     accessKeyId: client.accessKey
     secretAccessKey: client.secretKey
@@ -127,18 +125,20 @@ console.log 'Started at', new Date
 fetchClient 0, config.clients, ->
   html = '<style>table td { padding-right: 20px; }</style>'
   html += '<p>EC2 Backup successfully ran at ' + dateFormat(new Date, 'dddd, mmmm dS, yyyy, h:MM:ss TT') + '</p>'
-  if successes.length > 0
-    html += '<h4>Successes</h4>'
-    html += '<table><tr><th>Date</th><th>Name</th><th>Message</th></tr>'
-    for success in successes
-      html += '<tr><td>' + success.time + '</td><td>' + success.name + '</td><td>' + success.message + '</td></tr>'
-    html += '</table>'
-  if errors.length > 0
-    html += '<h4>Errors</h4>'
-    html += '<table><tr><th>Date</th><th>Name</th><th>Message</th></tr>'
-    for error in errors
-      html += '<tr><td>' + error.time + '</td><td>' + error.name + '</td><td>' + error.message + '</td></tr>'
-    html += '</table>'
+  for client in config.clients
+    html += '<h3>' + client.clientName + '</h3>'
+    if client.successes.length > 0
+      html += '<h4>Successes</h4>'
+      html += '<table><tr><th>Date</th><th>Name</th><th>Message</th></tr>'
+      for success in client.successes
+        html += '<tr><td>' + success.time + '</td><td>' + success.name + '</td><td>' + success.message + '</td></tr>'
+      html += '</table>'
+    if client.errors.length > 0
+      html += '<h4>Errors</h4>'
+      html += '<table><tr><th>Date</th><th>Name</th><th>Message</th></tr>'
+      for error in client.errors
+        html += '<tr><td>' + error.time + '</td><td>' + error.name + '</td><td>' + error.message + '</td></tr>'
+      html += '</table>'
   transporter = nodemailer.createTransport
     host: config.mail.smtpServer
     port: config.mail.port
