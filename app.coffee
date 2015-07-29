@@ -116,7 +116,7 @@ fetchClient = (index, clients, cb) ->
           fetchReservation 0, reservations.Reservations, ->
             goToNext()
     else
-      logError err
+      logError 'No images'
       myEC2.describeInstances (err, reservations) ->
         fetchReservation 0, reservations.Reservations, ->
           goToNext()

@@ -182,7 +182,7 @@
           });
         });
       } else {
-        logError(err);
+        logError('No images');
         return myEC2.describeInstances(function(err, reservations) {
           return fetchReservation(0, reservations.Reservations, function() {
             return goToNext();
