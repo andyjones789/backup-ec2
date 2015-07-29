@@ -124,7 +124,7 @@ fetchClient = (index, clients, cb) ->
 console.log 'Started at', new Date
 fetchClient 0, config.clients, ->
   html = '<style>table td { padding-right: 20px; }</style>'
-  html += '<p>EC2 Backup successfully ran at ' + dateFormat(new Date, 'dddd, mmmm dS, yyyy, h:MM:ss TT') + '</p>'
+  html += '<p>EC2 Backup successfully ran on ' + dateFormat(new Date, 'dddd, mmmm dS, yyyy, h:MM:ss TT') + '</p>'
   for client in config.clients
     html += '<h3>' + client.clientName + '</h3>'
     if client.successes.length > 0
