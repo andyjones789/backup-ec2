@@ -196,7 +196,7 @@
 
   fetchClient(0, config.clients, function() {
     var error, html, i, j, k, len, len1, len2, ref, ref1, ref2, success, transporter;
-    html = '<style>table td { padding-right: 20px; }</style>';
+    html = '<style>table td { padding-right: 20px; } table { margin-bottom: 20px; }</style>';
     html += '<p>EC2 Backup successfully ran on ' + dateFormat(new Date, 'dddd, mmmm dS, yyyy, h:MM:ss TT') + '</p>';
     ref = config.clients;
     for (i = 0, len = ref.length; i < len; i++) {
