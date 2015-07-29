@@ -196,14 +196,14 @@
 
   fetchClient(0, config.clients, function() {
     var error, html, i, j, k, len, len1, len2, ref, ref1, ref2, success, transporter;
-    html = '<style>table td { padding-right: 20px; } table { margin-bottom: 20px; }</style>';
+    html = '<style>table td { padding-right: 20px; }</style>';
     html += '<p>EC2 Backup successfully ran on ' + dateFormat(new Date, 'dddd, mmmm dS, yyyy, h:MM:ss TT') + '</p>';
     ref = config.clients;
     for (i = 0, len = ref.length; i < len; i++) {
       client = ref[i];
-      html += '<h3>' + client.clientName + '</h3>';
+      html += '<h3 style="padding-top: 20px">' + client.clientName + '</h3>';
       if (client.successes.length > 0) {
-        html += '<h4>Successes</h4>';
+        html += '<h4 style="color: green">Successes</h4>';
         html += '<table><tr><th>Date</th><th>Name</th><th>Message</th></tr>';
         ref1 = client.successes;
         for (j = 0, len1 = ref1.length; j < len1; j++) {
@@ -213,7 +213,7 @@
         html += '</table>';
       }
       if (client.errors.length > 0) {
-        html += '<h4>Errors</h4>';
+        html += '<h4 style="color: red">Errors</h4>';
         html += '<table><tr><th>Date</th><th>Name</th><th>Message</th></tr>';
         ref2 = client.errors;
         for (k = 0, len2 = ref2.length; k < len2; k++) {
@@ -237,7 +237,6 @@
       subject: config.mail.subject,
       html: html
     });
-    console.log(html);
     return console.log('Done at', new Date);
   });
 

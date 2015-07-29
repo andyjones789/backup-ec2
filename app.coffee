@@ -123,18 +123,18 @@ fetchClient = (index, clients, cb) ->
 
 console.log 'Started at', new Date
 fetchClient 0, config.clients, ->
-  html = '<style>table td { padding-right: 20px; } table { margin-bottom: 20px; }</style>'
+  html = '<style>table td { padding-right: 20px; }</style>'
   html += '<p>EC2 Backup successfully ran on ' + dateFormat(new Date, 'dddd, mmmm dS, yyyy, h:MM:ss TT') + '</p>'
   for client in config.clients
-    html += '<h3>' + client.clientName + '</h3>'
+    html += '<h3 style="padding-top: 20px">' + client.clientName + '</h3>'
     if client.successes.length > 0
-      html += '<h4>Successes</h4>'
+      html += '<h4 style="color: green">Successes</h4>'
       html += '<table><tr><th>Date</th><th>Name</th><th>Message</th></tr>'
       for success in client.successes
         html += '<tr><td>' + success.time + '</td><td>' + success.name + '</td><td>' + success.message + '</td></tr>'
       html += '</table>'
     if client.errors.length > 0
-      html += '<h4>Errors</h4>'
+      html += '<h4 style="color: red">Errors</h4>'
       html += '<table><tr><th>Date</th><th>Name</th><th>Message</th></tr>'
       for error in client.errors
         html += '<tr><td>' + error.time + '</td><td>' + error.name + '</td><td>' + error.message + '</td></tr>'
@@ -150,5 +150,4 @@ fetchClient 0, config.clients, ->
     to: config.mail.to
     subject: config.mail.subject
     html: html
-  console.log html
   console.log 'Done at', new Date
